@@ -9,10 +9,8 @@ const CONFIG = {
     supabaseKey: "sb_publishable_2c6dYLHIeaR6ohv7Tl5bQQ_QkDAOwsq"
 };
 
-// Initialize Supabase Client
 const supabase = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
 
-// Static Categories
 const CATEGORIES = [
     { id: "desks", name: "Gaming Desks", icon: "fa-desktop" },
     { id: "chairs", name: "Gaming Chairs", icon: "fa-chair" },
@@ -21,7 +19,6 @@ const CATEGORIES = [
     { id: "new", name: "New Arrivals", icon: "fa-sparkles" }
 ];
 
-// Fallback Backup Products
 const FALLBACK_PRODUCTS = [
     {
         id: 1,
@@ -30,8 +27,8 @@ const FALLBACK_PRODUCTS = [
         category_name: "Gaming Desks",
         price: 49.900,
         image: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=800&q=80",
-        description: "طاولة قيمنق سطح كربون فايبر مقاوم للخدش مع إضاءة RGB مدمجة، وحامل أكواب وسماعات.",
-        specs: "الطول: 140 سم | العرض: 60 سم | الارتفاع: 75 سم"
+        description: "طاولة قيمنق سطح كربون فايبر مقاوم للخدش مع إضاءة RGB مدمجة.",
+        specs: "الطول: 140 سم | العرض: 60 سم"
     },
     {
         id: 2,
@@ -40,18 +37,8 @@ const FALLBACK_PRODUCTS = [
         category_name: "Gaming Chairs",
         price: 65.000,
         image: "https://images.unsplash.com/photo-1598550473471-e5d8a0d01402?auto=format&fit=crop&w=800&q=80",
-        description: "مصمم من الجلد الفاخر ودعم كامل لأسفل الظهر والرقبة، قابل للتعديل بالكامل لتوفير أقصى درجات الراحة.",
-        specs: "إمالة حتى 180 درجة | وسائد طبية مدمجة"
-    },
-    {
-        id: 3,
-        name: "ذراع شاشة مزدوج Heavy-Duty Mount",
-        category: "accessories",
-        category_name: "Accessories",
-        price: 18.500,
-        image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
-        description: "حامل شاشات يدعم شاشتين حتى 32 بوصة مع تنظيم مخفي للكابلات وتحكم كامل بالزوايا.",
-        specs: "دعم VESA | حمولة 9 كجم لكل ذراع"
+        description: "مصمم من الجلد الفاخر ودعم كامل لأسفل الظهر والرقبة.",
+        specs: "إمالة حتى 180 درجة"
     }
 ];
 
@@ -59,26 +46,24 @@ let PRODUCTS = [];
 let cart = JSON.parse(localStorage.getItem('nexus_cart')) || [];
 
 /* ==========================================================================
-   2. Data Fetching From Supabase Database
+   2. Data Fetching
    ========================================================================== */
 async function fetchProductsFromDatabase() {
     try {
         const { data, error } = await supabase.from('products').select('*');
         if (error || !data || data.length === 0) {
-            console.warn('تنبيه: تعذر إحضار بيانات Supabase أو الجدول فارغ، تم التبديل تلقائياً للبيانات الاحتياطية.', error);
             PRODUCTS = FALLBACK_PRODUCTS;
         } else {
             PRODUCTS = data;
         }
     } catch (e) {
-        console.error('خطأ غير متوقع في الاتصال بقاعدة البيانات:', e);
         PRODUCTS = FALLBACK_PRODUCTS;
     }
     renderProducts(PRODUCTS);
 }
 
 /* ==========================================================================
-   3. Render UI Components
+   3. Render UI
    ========================================================================== */
 function renderCategories() {
     const container = document.getElementById('categories-container');
@@ -93,8 +78,7 @@ function renderCategories() {
 
     container.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', () => {
-            const catId = card.getAttribute('data-cat');
-            filterByCategory(catId);
+            filterByCategory(card.getAttribute('data-cat'));
         });
     });
 }
@@ -113,7 +97,7 @@ function renderProducts(items) {
             <div class="product-thumb">
                 <img src="${product.image}" alt="${product.name}" loading="lazy">
                 <div class="product-actions">
-                    <button class="btn-circle quick-view-btn" data-id="${product.id}" aria-label="عرض سريع">
+                    <button class="btn-circle quick-view-btn" data-id="${product.id}">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
@@ -127,24 +111,17 @@ function renderProducts(items) {
         </div>
     `).join('');
 
-    // Attach Event Listeners Safely
     container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            addToCart(id);
-        });
+        btn.addEventListener('click', () => addToCart(parseInt(btn.getAttribute('data-id'))));
     });
 
     container.querySelectorAll('.quick-view-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = parseInt(btn.getAttribute('data-id'));
-            openProductModal(id);
-        });
+        btn.addEventListener('click', () => openProductModal(parseInt(btn.getAttribute('data-id'))));
     });
 }
 
 /* ==========================================================================
-   4. Search & Filter Handlers
+   4. Search & Filter
    ========================================================================== */
 function handleSearch() {
     const query = document.getElementById('search-input').value.toLowerCase();
@@ -160,8 +137,7 @@ function filterByCategory(catId) {
         renderProducts(PRODUCTS);
         return;
     }
-    const filtered = PRODUCTS.filter(p => p.category === catId);
-    renderProducts(filtered);
+    renderProducts(PRODUCTS.filter(p => p.category === catId));
 }
 
 function handleSort() {
@@ -173,7 +149,7 @@ function handleSort() {
 }
 
 /* ==========================================================================
-   5. Cart Operations & LocalStorage Persistence
+   5. Cart Operations
    ========================================================================== */
 function saveCart() {
     localStorage.setItem('nexus_cart', JSON.stringify(cart));
@@ -238,9 +214,7 @@ function updateCartUI() {
                             <button class="qty-btn" data-id="${product.id}" data-action="plus">+</button>
                         </div>
                     </div>
-                    <button class="cart-item-remove" data-id="${product.id}" aria-label="حذف">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
+                    <button class="cart-item-remove" data-id="${product.id}"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             `;
         }).join('');
@@ -254,10 +228,7 @@ function updateCartUI() {
         });
 
         container.querySelectorAll('.cart-item-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = parseInt(btn.getAttribute('data-id'));
-                removeFromCart(id);
-            });
+            btn.addEventListener('click', () => removeFromCart(parseInt(btn.getAttribute('data-id'))));
         });
     }
 
@@ -278,7 +249,7 @@ function toggleCartDrawer(forceOpen = false) {
 }
 
 /* ==========================================================================
-   6. Modals Management
+   6. Modals & Handlers
    ========================================================================== */
 function openProductModal(id) {
     const p = PRODUCTS.find(prod => prod.id === id);
@@ -286,22 +257,15 @@ function openProductModal(id) {
 
     const content = document.getElementById('modal-content');
     content.innerHTML = `
-        <div class="modal-gallery">
-            <img src="${p.image}" alt="${p.name}">
+        <div class="modal-gallery" style="margin-bottom: 15px;">
+            <img src="${p.image}" alt="${p.name}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
         </div>
         <div>
             <span style="color: var(--accent-primary); font-size: 0.85rem; font-weight: 700;">${p.category_name || p.category}</span>
-            <h2 style="font-size: 1.8rem; margin: 8px 0 16px;">${p.name}</h2>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #FFF; margin-bottom: 20px;">${Number(p.price).toFixed(3)} ${CONFIG.currency}</div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.95rem;">${p.description || ''}</p>
-            <div style="background: var(--bg-card); padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-bottom: 24px;">
-                <span style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 4px;">المواصفات:</span>
-                <strong style="font-size: 0.9rem;">${p.specs || 'جودة ممتازة وضمان مضمون'}</strong>
-            </div>
-            <button class="btn btn-primary" id="modal-add-btn" style="width: 100%;">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span>إضافة إلى السلة</span>
-            </button>
+            <h2 style="font-size: 1.5rem; margin: 8px 0;">${p.name}</h2>
+            <div style="font-size: 1.3rem; font-weight: 800; color: #FFF; margin-bottom: 15px;">${Number(p.price).toFixed(3)} ${CONFIG.currency}</div>
+            <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.95rem;">${p.description || ''}</p>
+            <button class="btn btn-primary" id="modal-add-btn" style="width: 100%;">إضافة إلى السلة</button>
         </div>
     `;
 
@@ -326,9 +290,6 @@ function openCheckout() {
     document.getElementById('checkout-modal').classList.add('open');
 }
 
-/* ==========================================================================
-   7. Checkout & WhatsApp Integration
-   ========================================================================== */
 function processWhatsAppOrder(e) {
     e.preventDefault();
 
@@ -350,17 +311,10 @@ function processWhatsAppOrder(e) {
     });
 
     const rawMessage = `مرحباً، أرغب في طلب المنتجات التالية:\n\n` +
-        `━━━━━━━━━━━━\n` +
-        `الطلب\n` +
-        `━━━━━━━━━━━━\n\n` +
+        `━━━━━━━━━━━━\nالطلب\n━━━━━━━━━━━━\n\n` +
         `${orderItemsText}` +
-        `━━━━━━━━━━━━\n` +
-        `الإجمالي: ${subtotal.toFixed(3)} ${CONFIG.currency}\n` +
-        `━━━━━━━━━━━━\n\n` +
-        `الاسم: ${name}\n` +
-        `رقم الهاتف: ${phone}\n` +
-        `موقع التوصيل: ${location}\n` +
-        `ملاحظات: ${notes}\n\n` +
+        `━━━━━━━━━━━━\nالإجمالي: ${subtotal.toFixed(3)} ${CONFIG.currency}\n━━━━━━━━━━━━\n\n` +
+        `الاسم: ${name}\nرقم الهاتف: ${phone}\nموقع التوصيل: ${location}\nملاحظات: ${notes}\n\n` +
         `أرغب في تأكيد الطلب. شكراً.`;
 
     const encodedMessage = encodeURIComponent(rawMessage);
@@ -374,15 +328,13 @@ function processWhatsAppOrder(e) {
 }
 
 /* ==========================================================================
-   8. Global Event Listeners & Startup Initialization
+   7. Startup & Event Listeners
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    // Bind Static WhatsApp Links
     const waUrl = `https://wa.me/${CONFIG.whatsappNumber}`;
     document.getElementById('floating-wa').href = waUrl;
     document.getElementById('footer-wa-link').href = waUrl;
 
-    // Direct Event Binding
     document.getElementById('cart-toggle-btn').addEventListener('click', () => toggleCartDrawer());
     document.getElementById('close-cart-btn').addEventListener('click', () => toggleCartDrawer(false));
     document.getElementById('drawer-overlay').addEventListener('click', () => toggleCartDrawer(false));
@@ -396,16 +348,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('close-product-modal').addEventListener('click', () => closeModal('product-modal'));
     document.getElementById('close-checkout-modal').addEventListener('click', () => closeModal('checkout-modal'));
 
-    document.getElementById('mobile-cart-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleCartDrawer();
-    });
-
     document.getElementById('search-input').addEventListener('input', handleSearch);
     document.getElementById('sort-select').addEventListener('change', handleSort);
     document.getElementById('checkout-form').addEventListener('submit', processWhatsAppOrder);
 
-    // Admin Add Product Modal Event Listeners
+    // Add Product Modal Events
     document.getElementById('admin-add-btn').addEventListener('click', () => {
         document.getElementById('add-product-modal').classList.add('open');
     });
@@ -441,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .select();
 
             if (error) {
-                console.error('Supabase Insert Error:', error);
+                console.error('Supabase Error:', error);
                 alert('حدث خطأ أثناء الإضافة: ' + error.message);
             } else {
                 alert('تمت إضافة المنتج بنجاح!');
@@ -458,14 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Scroll Effects
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (window.scrollY > 50) nav.classList.add('scrolled');
-        else nav.classList.remove('scrolled');
-    });
-
-    // Run Core Functions
+    // Run Initial Operations
     renderCategories();
     fetchProductsFromDatabase();
     updateCartUI();
