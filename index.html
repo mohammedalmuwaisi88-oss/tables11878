@@ -266,6 +266,52 @@
         </div>
     </div>
 
+    <!-- Admin Add Product Floating Button -->
+    <button id="admin-add-btn" class="admin-float-btn">
+        <i class="fa-solid fa-plus"></i>
+        <span>إضافة منتج</span>
+    </button>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="add-product-modal">
+        <div class="modal-card checkout-modal" style="padding: 32px;">
+            <button class="modal-close-btn" id="close-add-modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2 style="margin-bottom: 24px;">إضافة منتج جديد للمتجر</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label>اسم المنتج</label>
+                    <input type="text" id="prod-name" class="form-control" placeholder="مثال: طاولة قيمنق هيدروليك" required>
+                </div>
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <select id="prod-category" class="form-control" required>
+                        <option value="desks">Gaming Desks (طاولات)</option>
+                        <option value="chairs">Gaming Chairs (كراسي)</option>
+                        <option value="accessories">Accessories (إكسسوارات)</option>
+                        <option value="setups">Gaming Setup (سيت أب)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>السعر (بالريال العماني)</label>
+                    <input type="number" step="0.001" id="prod-price" class="form-control" placeholder="45.000" required>
+                </div>
+                <div class="form-group">
+                    <label>رابط الصورة المباشر (URL)</label>
+                    <input type="url" id="prod-image" class="form-control" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="prod-desc" class="form-control" rows="2" placeholder="وصف المنتج..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>المواصفات</label>
+                    <input type="text" id="prod-specs" class="form-control" placeholder="مثال: الأبعاد 140x60 سم">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">حفظ وإضافة للمتجر</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Floating WhatsApp Button -->
     <a href="#" id="floating-wa" target="_blank" class="whatsapp-float">
         <i class="fa-brands fa-whatsapp fa-xl"></i>
