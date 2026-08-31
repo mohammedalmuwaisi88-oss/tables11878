@@ -245,7 +245,6 @@ function updateCartUI() {
             `;
         }).join('');
 
-        // Attach listeners dynamically for cart items
         container.querySelectorAll('.qty-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const id = parseInt(btn.getAttribute('data-id'));
@@ -406,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('sort-select').addEventListener('change', handleSort);
     document.getElementById('checkout-form').addEventListener('submit', processWhatsAppOrder);
 
-    // Admin Add Product Modal Listeners
+    // Admin Add Product Modal Event Listeners
     document.getElementById('admin-add-btn').addEventListener('click', () => {
         document.getElementById('add-product-modal').classList.add('open');
     });
@@ -418,26 +417,44 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-product-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const categorySelect = document.getElementById('prod-category');
-        const newProduct = {
-            name: document.getElementById('prod-name').value,
-            category: categorySelect.value,
-            category_name: categorySelect.options[categorySelect.selectedIndex].text,
-            price: parseFloat(document.getElementById('prod-price').value),
-            image: document.getElementById('prod-image').value,
-            description: document.getElementById('prod-desc').value,
-            specs: document.getElementById('prod-specs').value
-        };
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.innerText = "جاري الإضافة...";
+        submitBtn.disabled = true;
 
-        const { data, error } = await supabase.from('products').insert([newProduct]).select();
+        try {
+            const categorySelect = document.getElementById('prod-category');
+            
+            const newProduct = {
+                name: document.getElementById('prod-name').value.trim(),
+                category: categorySelect.value,
+                category_name: categorySelect.options[categorySelect.selectedIndex].text,
+                price: parseFloat(document.getElementById('prod-price').value),
+                image: document.getElementById('prod-image').value.trim(),
+                description: document.getElementById('prod-desc').value.trim() || '',
+                specs: document.getElementById('prod-specs').value.trim() || ''
+            };
 
-        if (error) {
-            alert('حدث خطأ أثناء الإضافة: ' + error.message);
-        } else {
-            alert('تمت إضافة المنتج بنجاح!');
-            document.getElementById('add-product-form').reset();
-            closeModal('add-product-modal');
-            fetchProductsFromDatabase();
+            const { data, error } = await supabase
+                .from('products')
+                .insert([newProduct])
+                .select();
+
+            if (error) {
+                console.error('Supabase Insert Error:', error);
+                alert('حدث خطأ أثناء الإضافة: ' + error.message);
+            } else {
+                alert('تمت إضافة المنتج بنجاح!');
+                document.getElementById('add-product-form').reset();
+                closeModal('add-product-modal');
+                await fetchProductsFromDatabase();
+            }
+        } catch (err) {
+            console.error('Unexpected Exception:', err);
+            alert('حدث خطأ غير متوقع: ' + err.message);
+        } finally {
+            submitBtn.innerText = originalBtnText;
+            submitBtn.disabled = false;
         }
     });
 
