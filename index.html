@@ -3,338 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تجهيزات الألعاب الفاخرة | أثاث ومستلزمات قيمنق احترافية</title>
-    <meta name="description" content="ارتقِ بمساحتك مع أفخم طاولات وكراسي وإكسسوارات القيمنق في سلطنة عمان.">
-    
-    <!-- Open Graph Metadata -->
-    <meta property="og:title" content="تجهيزات الألعاب الفاخرة | أثاث ومستلزمات قيمنق احترافية">
-    <meta property="og:description" content="ارتقِ بمساحتك مع أفخم طاولات وكراسي وإكسسوارات القيمنق في سلطنة عمان.">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_OM">
-    
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>NEXUS GAMING | متجر قيمنق احترافي</title>
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Stylesheet -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Supabase SDK -->
+
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <header id="navbar">
-        <div class="container">
-            <div class="nav-inner">
-                <a href="#" class="logo">
-                    <div class="logo-icon"><i class="fa-solid fa-gamepad"></i></div>
-                    <span id="brand-name-logo">NEXUS GAMING</span>
-                </a>
-                
-                <ul class="nav-links">
-                    <li><a href="#hero" class="active">الرئيسية</a></li>
-                    <li><a href="#store">المتجر</a></li>
-                    <li><a href="#categories">الفئات</a></li>
-                    <li><a href="#about">عن المتجر</a></li>
-                </ul>
+    <!-- Header / Navigation -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-gamepad"></i> NEXUS<span>GAMING</span>
+            </a>
+            
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="search-input" placeholder="ابحث عن منتج، كرسي، طاولة...">
+            </div>
 
-                <div class="nav-actions">
-                    <button class="action-icon" id="cart-toggle-btn" aria-label="سلة التسوق">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="badge" id="cart-count">0</span>
-                    </button>
+            <div class="nav-actions">
+                <div class="sort-wrapper">
+                    <select id="sort-select">
+                        <option value="default">الترتيب الافتراضي</option>
+                        <option value="low-high">السعر: من الأقل للأعلى</option>
+                        <option value="high-low">السعر: من الأعلى للأقل</option>
+                    </select>
                 </div>
+                
+                <button class="cart-btn" id="cart-toggle-btn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-bg-glow"></div>
-        <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <div class="hero-tag">
-                        <i class="fa-solid fa-bolt"></i>
-                        التشكل الجديد لمساحات القيمنق
-                    </div>
-                    <h1 class="hero-title">ارتقِ <span>بمساحتك.</span></h1>
-                    <p class="hero-desc">طاولات وتجهيزات Gaming مصممة لتمنح مساحتك مظهراً أفضل وتجربة أكثر راحة بأعلى معايير الجودة.</p>
-                    <div class="hero-ctas">
-                        <a href="#store" class="btn btn-primary">
-                            <span>تسوق الآن</span>
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </a>
-                        <a href="#categories" class="btn btn-secondary">استكشف المنتجات</a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="hero-card">
-                        <img src="https://images.unsplash.com/photo-1616588589676-63b3dab76d44?auto=format&fit=crop&w=1000&q=80" alt="Gamers Setup">
-                    </div>
-                </div>
-            </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>جهّز سيت أب الأحلام بأعلى جودة</h1>
+            <p>طاولات، كراسي، وإكسسوارات قيمنق احترافية لتجربة لعب لا تُنسى</p>
         </div>
     </section>
 
-    <!-- Product Categories -->
-    <section class="categories-section" id="categories">
-        <div class="container">
-            <div style="text-align: center;">
-                <h2 class="section-title">فئات المنتجات</h2>
-                <p class="section-subtitle">صُممت بعناية لتناسب أرقى سيت أب قيمنق</p>
-            </div>
-            <div class="categories-grid" id="categories-container"></div>
-        </div>
+    <!-- Categories Section -->
+    <section class="section">
+        <h2 class="section-title">الأقسام الرئيسية</h2>
+        <div class="categories-grid" id="categories-container"></div>
     </section>
 
-    <!-- Products Catalog Section -->
-    <section class="catalog-section" id="store">
-        <div class="container">
-            <div class="catalog-controls">
-                <div>
-                    <h2 class="section-title">المتجر الرئيسي</h2>
-                    <p class="section-subtitle" style="margin-bottom: 0;">اختر من مجموعتنا الحصرية</p>
-                </div>
-                
-                <div class="filter-group">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-input" placeholder="ابحث عن طاولة، كرسي...">
-                    </div>
-                    <select class="filter-select" id="sort-select">
-                        <option value="relevant">الأكثر صلة</option>
-                        <option value="low-high">السعر: من الأقل للأعلى</option>
-                        <option value="high-low">السعر: من الأعلى للأقل</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="products-grid" id="products-container">
-                <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">جاري تحميل المنتجات...</p>
-            </div>
-        </div>
+    <!-- Products Section -->
+    <section class="section">
+        <h2 class="section-title">المنتجات</h2>
+        <div class="products-grid" id="products-container"></div>
     </section>
 
-    <!-- Trust Factors -->
-    <section class="trust-section">
-        <div class="container">
-            <div class="trust-grid">
-                <div class="trust-item">
-                    <div class="trust-icon"><i class="fa-solid fa-gem"></i></div>
-                    <h4>منتجات مختارة بعناية</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">تصاميم متميزة تدمج الفخامة بالأداء</p>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h4>جودة موثوقة</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">خامات ممتازة تدوم طويلاً</p>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon"><i class="fa-brands fa-whatsapp"></i></div>
-                    <h4>طلب سريع عبر WhatsApp</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">تجربة شراء سهلة ومباشرة</p>
-                </div>
-                <div class="trust-item">
-                    <div class="trust-icon"><i class="fa-solid fa-headset"></i></div>
-                    <h4>خدمة عملاء مباشرة</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">فريق متخصص لمساعدتك متى شئت</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Floating Add Product Button -->
+    <button id="admin-add-btn" class="floating-btn" title="إضافة منتج جديد">
+        <i class="fa-solid fa-plus"></i>
+        <span>إضافة منتج</span>
+    </button>
 
-    <!-- About Brand Section -->
-    <section class="brand-story" id="about">
-        <div class="container">
-            <div class="brand-story-content">
-                <h2 class="section-title">فلسفتنا في العمل</h2>
-                <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; margin-top: 20px;">
-                    لسنا مجرد متجر لبيع مستلزمات الألعاب الإلكترونية، نحن متكفلون بإعادة تعريف وتطوير المساحة الخاصة بك. نؤمن بأن سيت أب القيمنق ليس مجرد مكان للعب، بل هو بيئة للإبداع، التركيز، والاسترخاء الفاخر. نضمن لك دائمًا أفضل الخامات وأجود القطع لتجربة مستخدم لا تضاهى.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="logo" style="margin-bottom: 16px;">
-                        <div class="logo-icon"><i class="fa-solid fa-gamepad"></i></div>
-                        <span id="brand-name-footer">NEXUS GAMING</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 300px;">
-                        العنوان الأول لأثاث ومستلزمات القيمنق الفاخرة في سلطنة عمان.
-                    </p>
-                </div>
-                <div>
-                    <h4 style="margin-bottom: 16px;">روابط سريعة</h4>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; color: var(--text-secondary);">
-                        <li><a href="#hero">الرئيسية</a></li>
-                        <li><a href="#store">المتجر</a></li>
-                        <li><a href="#categories">الفئات</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 style="margin-bottom: 16px;">المساعدة</h4>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; color: var(--text-secondary);">
-                        <li><a href="#" id="footer-checkout-btn">إكمال الطلب</a></li>
-                        <li><a href="#" id="footer-wa-link" target="_blank">الدعم الفني عبر واتساب</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 style="margin-bottom: 16px;">التوصيل</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">
-                        التوصيل متاح حسب المنطقة في كافة أنحاء سلطنة عمان.
-                    </p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2026 جميع الحقوق محفوظة | علامة قيمنق فاخرة</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Floating WhatsApp Button -->
+    <a href="#" id="floating-wa" class="floating-wa" target="_blank" title="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
     <!-- Cart Drawer -->
     <div class="drawer-overlay" id="drawer-overlay"></div>
     <div class="cart-drawer" id="cart-drawer">
         <div class="drawer-header">
-            <h3>سلة التسوق</h3>
-            <button id="close-cart-btn"><i class="fa-solid fa-xmark fa-lg"></i></button>
+            <h3>سلة المشتريات</h3>
+            <span class="close-btn" id="close-cart-btn">&times;</span>
         </div>
         <div class="drawer-body" id="cart-items-container"></div>
         <div class="drawer-footer">
-            <div class="cart-total-row">
-                <span>المجموع:</span>
-                <span id="cart-subtotal">0.000 ر.ع</span>
+            <div class="subtotal-row">
+                <span>الإجمالي:</span>
+                <strong id="cart-subtotal">0.000 ر.ع</strong>
             </div>
-            <button class="btn btn-primary" style="width: 100%;" id="checkout-start-btn">المتابعة للشراء</button>
+            <button class="btn btn-primary" id="checkout-start-btn" style="width: 100%;">متابعة الطلب عبر واتساب</button>
         </div>
     </div>
 
-    <!-- Quick View / Product Details Modal -->
+    <!-- Modal: Product Quick View -->
     <div class="modal" id="product-modal">
         <div class="modal-card">
-            <button class="modal-close-btn" id="close-product-modal"><i class="fa-solid fa-xmark"></i></button>
-            <div class="modal-grid" id="modal-content"></div>
+            <span class="modal-close" id="close-product-modal">&times;</span>
+            <div class="modal-body" id="modal-content"></div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- Modal: Checkout Form -->
     <div class="modal" id="checkout-modal">
-        <div class="modal-card checkout-modal" style="padding: 32px;">
-            <button class="modal-close-btn" id="close-checkout-modal"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom: 24px;">معلومات إتمام الطلب</h2>
+        <div class="modal-card">
+            <span class="modal-close" id="close-checkout-modal">&times;</span>
+            <h2>إتمام الطلب</h2>
             <form id="checkout-form">
                 <div class="form-group">
-                    <label for="cust-name">الاسم الكامل</label>
-                    <input type="text" id="cust-name" class="form-control" placeholder="أدخل اسمك الكريم" required>
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="cust-name" required placeholder="أدخل اسمك الكامل">
                 </div>
                 <div class="form-group">
-                    <label for="cust-phone">رقم الهاتف</label>
-                    <input type="tel" id="cust-phone" class="form-control" placeholder="968xxxx----" required>
+                    <label>رقم الهاتف / الواتساب</label>
+                    <input type="tel" id="cust-phone" required placeholder="مثال: 96872420073">
                 </div>
                 <div class="form-group">
-                    <label for="cust-location">موقع التوصيل (المنطقة / الولاية)</label>
-                    <input type="text" id="cust-location" class="form-control" placeholder="مثال: مسقط، الخوض" required>
+                    <label>العنوان / موقع التوصيل</label>
+                    <input type="text" id="cust-location" required placeholder="المنطقة / الولاية / الشارع">
                 </div>
                 <div class="form-group">
-                    <label for="cust-notes">ملاحظات إضافية (اختياري)</label>
-                    <textarea id="cust-notes" class="form-control" rows="3" placeholder="أي تفاصيل خاصة بالطلب"></textarea>
+                    <label>ملاحظات إضافية (اختياري)</label>
+                    <textarea id="cust-notes" rows="2" placeholder="أي تعليمات خاصة للطلب..."></textarea>
                 </div>
-                <div style="background: var(--bg-dark); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span>إجمالي المنتجات:</span>
-                        <span id="checkout-total">0.000 ر.ع</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.85rem;">
-                        <span>التوصيل:</span>
-                        <span>يتم تحديده عبر الواتساب حسب المنطقة</span>
-                    </div>
+                <div class="checkout-summary">
+                    <span>المبلغ الإجمالي:</span>
+                    <strong id="checkout-total">0.000 ر.ع</strong>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fa-brands fa-whatsapp fa-lg"></i>
-                    <span>إكمال الطلب عبر WhatsApp</span>
-                </button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">إرسال الطلب للواتساب</button>
             </form>
         </div>
     </div>
 
-    <!-- Admin Add Product Floating Button -->
-    <button id="admin-add-btn" class="admin-float-btn">
-        <i class="fa-solid fa-plus"></i>
-        <span>إضافة منتج</span>
-    </button>
-
-    <!-- Add Product Modal -->
+    <!-- Modal: Add New Product -->
     <div class="modal" id="add-product-modal">
-        <div class="modal-card checkout-modal" style="padding: 32px;">
-            <button class="modal-close-btn" id="close-add-modal"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="margin-bottom: 24px;">إضافة منتج جديد للمتجر</h2>
+        <div class="modal-card">
+            <span class="modal-close" id="close-add-modal">&times;</span>
+            <h2>إضافة منتج جديد</h2>
             <form id="add-product-form">
                 <div class="form-group">
                     <label>اسم المنتج</label>
-                    <input type="text" id="prod-name" class="form-control" placeholder="مثال: طاولة قيمنق هيدروليك" required>
+                    <input type="text" id="prod-name" required placeholder="مثال: كرسي قيمنق احترافي">
                 </div>
+                
                 <div class="form-group">
-                    <label>الفئة</label>
-                    <select id="prod-category" class="form-control" required>
-                        <option value="desks">Gaming Desks (طاولات)</option>
-                        <option value="chairs">Gaming Chairs (كراسي)</option>
-                        <option value="accessories">Accessories (إكسسوارات)</option>
-                        <option value="setups">Gaming Setup (سيت أب)</option>
+                    <label>القسم</label>
+                    <select id="prod-category" required>
+                        <option value="desks">Gaming Desks</option>
+                        <option value="chairs">Gaming Chairs</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="setups">Gaming Setup</option>
                     </select>
                 </div>
+
                 <div class="form-group">
-                    <label>السعر (بالريال العماني)</label>
-                    <input type="number" step="0.001" id="prod-price" class="form-control" placeholder="45.000" required>
+                    <label>السعر (ر.ع)</label>
+                    <input type="number" step="0.100" id="prod-price" required placeholder="مثال: 45.000">
                 </div>
+
                 <div class="form-group">
-                    <label>رابط الصورة المباشر (URL)</label>
-                    <input type="url" id="prod-image" class="form-control" placeholder="https://..." required>
+                    <label>رابط الصورة</label>
+                    <input type="url" id="prod-image" required placeholder="https://...">
                 </div>
+
                 <div class="form-group">
                     <label>الوصف</label>
-                    <textarea id="prod-desc" class="form-control" rows="2" placeholder="وصف المنتج..."></textarea>
+                    <textarea id="prod-desc" rows="3" placeholder="وصف المنتج..."></textarea>
                 </div>
+
                 <div class="form-group">
                     <label>المواصفات</label>
-                    <input type="text" id="prod-specs" class="form-control" placeholder="مثال: الأبعاد 140x60 سم">
+                    <input type="text" id="prod-specs" placeholder="مثال: إمالة 180 درجة | جلد فاخر">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">حفظ وإضافة للمتجر</button>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">حفظ وإضافة للمتجر</button>
             </form>
         </div>
     </div>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="#" id="floating-wa" target="_blank" class="whatsapp-float">
-        <i class="fa-brands fa-whatsapp fa-xl"></i>
-        <span>تواصل معنا</span>
-    </a>
-
-    <!-- Mobile Bottom Navigation -->
-    <div class="mobile-nav">
-        <div class="mobile-nav-items">
-            <a href="#hero" class="mobile-nav-item active">
-                <i class="fa-solid fa-house"></i>
-                <span>الرئيسية</span>
-            </a>
-            <a href="#store" class="mobile-nav-item">
-                <i class="fa-solid fa-store"></i>
-                <span>المتجر</span>
-            </a>
-            <a href="#" class="mobile-nav-item" id="mobile-cart-btn">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <span>السلة</span>
-            </a>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 NEXUS GAMING. جميع الحقوق محفوظة.</p>
+        <div class="footer-links">
+            <a href="#" id="footer-wa-link">تواصل معنا</a>
+            <a href="#" id="footer-checkout-btn">السلة</a>
         </div>
-    </div>
+    </footer>
 
     <!-- Application Script -->
     <script src="script.js"></script>
