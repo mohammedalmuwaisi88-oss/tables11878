@@ -21,7 +21,7 @@ const CATEGORIES = [
     { id: "new", name: "New Arrivals", icon: "fa-sparkles" }
 ];
 
-// Fallback Backup Products (In case database table is newly initialized or empty)
+// Fallback Backup Products
 const FALLBACK_PRODUCTS = [
     {
         id: 1,
@@ -405,6 +405,41 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('search-input').addEventListener('input', handleSearch);
     document.getElementById('sort-select').addEventListener('change', handleSort);
     document.getElementById('checkout-form').addEventListener('submit', processWhatsAppOrder);
+
+    // Admin Add Product Modal Listeners
+    document.getElementById('admin-add-btn').addEventListener('click', () => {
+        document.getElementById('add-product-modal').classList.add('open');
+    });
+
+    document.getElementById('close-add-modal').addEventListener('click', () => {
+        closeModal('add-product-modal');
+    });
+
+    document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const categorySelect = document.getElementById('prod-category');
+        const newProduct = {
+            name: document.getElementById('prod-name').value,
+            category: categorySelect.value,
+            category_name: categorySelect.options[categorySelect.selectedIndex].text,
+            price: parseFloat(document.getElementById('prod-price').value),
+            image: document.getElementById('prod-image').value,
+            description: document.getElementById('prod-desc').value,
+            specs: document.getElementById('prod-specs').value
+        };
+
+        const { data, error } = await supabase.from('products').insert([newProduct]).select();
+
+        if (error) {
+            alert('حدث خطأ أثناء الإضافة: ' + error.message);
+        } else {
+            alert('تمت إضافة المنتج بنجاح!');
+            document.getElementById('add-product-form').reset();
+            closeModal('add-product-modal');
+            fetchProductsFromDatabase();
+        }
+    });
 
     // Scroll Effects
     window.addEventListener('scroll', () => {
